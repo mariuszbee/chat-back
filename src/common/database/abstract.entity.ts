@@ -5,7 +5,7 @@ import { SchemaTypes, Types } from 'mongoose';
 @Schema()
 @ObjectType({ isAbstract: true })
 export class AbstractEntity {
-  @Prop({ ype: SchemaTypes.ObjectId })
+  @Prop({ type: SchemaTypes.ObjectId })
   @Field(() => ID)
   _id: Types.ObjectId;
 }

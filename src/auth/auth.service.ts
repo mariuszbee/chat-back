@@ -29,9 +29,9 @@ export class AuthService {
     });
   }
   logout(response: Response) {
-    response.cookie('Authentication', '', {
+    response.clearCookie('Authentication', {
       httpOnly: true,
-      expires: new Date(),
+      expires: new Date(0),
     });
   }
 }

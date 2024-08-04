@@ -1,7 +1,23 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { Prop, Schema } from '@nestjs/mongoose';
+import { AbstractEntity } from 'src/common/database/abstract.entity';
 
 @ObjectType()
-export class Chat {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+@Schema()
+export class Chat extends AbstractEntity {
+  @Field()
+  @Prop()
+  userId: string;
+
+  @Field()
+  @Prop()
+  isPrivate: boolean;
+
+  @Field(() => [String])
+  @Prop([String])
+  userIds: string[];
+
+  @Field({ nullable: true })
+  @Prop()
+  name?: string;
 }

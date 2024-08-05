@@ -27,7 +27,7 @@ export class ChatsResolver {
   }
 
   @Query(() => Chat, { name: 'chat' })
-  findOne(@Args('_id') _id: number) {
+  findOne(@Args('_id') _id: string) {
     return this.chatsService.findOne(_id);
   }
 

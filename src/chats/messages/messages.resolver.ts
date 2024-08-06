@@ -39,7 +39,7 @@ export class MessagesResolver {
 
   @Subscription(() => Message, {
     filter: (payload, variables) => {
-      return payload.message.chatId === variables.chatId;
+      return payload.messageCreaterd.chatId === variables.chatId;
     },
   })
   messageCreated(@Args() _messageCreatedArgs: MessageCreatedArgs) {

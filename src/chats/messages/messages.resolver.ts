@@ -11,6 +11,7 @@ import { PUB_SUB } from 'src/common/constants/injection-tokens';
 import { PubSub } from 'graphql-subscriptions';
 import { MESSAGE_CREATED } from './constants/pubsub-triggers';
 import { MessageCreatedArgs } from './dto/message-created.args';
+import * as request from 'supertest';
 
 @Resolver(() => Message)
 export class MessagesResolver {
@@ -38,8 +39,12 @@ export class MessagesResolver {
   }
 
   @Subscription(() => Message, {
-    filter: (payload, variables) => {
-      return payload.messageCreated.chatId === variables.chatId;
+    filter: (payload, variables, context) => {
+      const userId = context.req.user._id;
+      return (
+        payload.messageCreated.chatId === variables.chatId &&
+        userId !== payload.messageCreated.userId
+      );
     },
   })
   messageCreated(@Args() _messageCreatedArgs: MessageCreatedArgs) {

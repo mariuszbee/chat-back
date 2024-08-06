@@ -10,6 +10,7 @@ import { GetMessagesArgs } from './dto/get-messages.args';
 import { PUB_SUB } from 'src/common/constants/injection-token';
 import { PubSub } from 'graphql-subscriptions';
 import { MESSAGE_CREATED } from './constants/bubsub-triggers';
+import { MessageCreatedArgs } from './dto/message-created.args';
 
 @Resolver(() => Message)
 export class MessagesResolver {
@@ -36,8 +37,14 @@ export class MessagesResolver {
     return this.messagesService.getMessages(getMessageArgs, user._id);
   }
 
-  @Subscription(() => Message)
-  messageCreated() {
-    return this.pubSub.asyncIterator(MESSAGE_CREATED);
+  @Subscription(() => Message, {
+    filter: (payload, variables) => {
+      return payload.message.chatId === variables.chatId;
+    },
+  })
+  messageCreated(@Args() _messageCreatedArgs: MessageCreatedArgs) {
+    {
+      return this.pubSub.asyncIterator(MESSAGE_CREATED);
+    }
   }
 }

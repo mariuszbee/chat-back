@@ -9,9 +9,7 @@ import { TokenPayload } from 'src/auth/token-payload.interface';
 import { GetMessagesArgs } from './dto/get-messages.args';
 import { PUB_SUB } from 'src/common/constants/injection-tokens';
 import { PubSub } from 'graphql-subscriptions';
-import { MESSAGE_CREATED } from './constants/pubsub-triggers';
 import { MessageCreatedArgs } from './dto/message-created.args';
-import * as request from 'supertest';
 
 @Resolver(() => Message)
 export class MessagesResolver {
@@ -47,9 +45,10 @@ export class MessagesResolver {
       );
     },
   })
-  messageCreated(@Args() _messageCreatedArgs: MessageCreatedArgs) {
-    {
-      return this.pubSub.asyncIterator(MESSAGE_CREATED);
-    }
+  messageCreated(
+    @Args() messageCreatedArgs: MessageCreatedArgs,
+    @CurrentUser() user: TokenPayload,
+  ) {
+    return this.messagesService.messageCreated(messageCreatedArgs, user._id);
   }
 }

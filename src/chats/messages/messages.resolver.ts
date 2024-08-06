@@ -3,13 +3,13 @@ import { MessagesService } from './messages.service';
 import { Message } from './entities/message.entity';
 import { Inject, UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
-import { CreateMessageInput } from './dto/create-message.inpot';
+import { CreateMessageInput } from './dto/create-message.input';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { TokenPayload } from 'src/auth/token-payload.interface';
 import { GetMessagesArgs } from './dto/get-messages.args';
-import { PUB_SUB } from 'src/common/constants/injection-token';
+import { PUB_SUB } from 'src/common/constants/injection-tokens';
 import { PubSub } from 'graphql-subscriptions';
-import { MESSAGE_CREATED } from './constants/bubsub-triggers';
+import { MESSAGE_CREATED } from './constants/pubsub-triggers';
 import { MessageCreatedArgs } from './dto/message-created.args';
 
 @Resolver(() => Message)
@@ -39,7 +39,7 @@ export class MessagesResolver {
 
   @Subscription(() => Message, {
     filter: (payload, variables) => {
-      return payload.messageCreaterd.chatId === variables.chatId;
+      return payload.messageCreated.chatId === variables.chatId;
     },
   })
   messageCreated(@Args() _messageCreatedArgs: MessageCreatedArgs) {

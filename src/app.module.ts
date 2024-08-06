@@ -10,7 +10,7 @@ import { UsersModule } from './users/users.module';
 import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from './auth/auth.module';
 import { ChatsModule } from './chats/chats.module';
-import { PubSubModule } from './common/bubsub/pubsub.module';
+import { PubSubModule } from './common/pubsub/pubsub.module';
 
 @Module({
   imports: [
@@ -32,6 +32,7 @@ import { PubSubModule } from './common/bubsub/pubsub.module';
     LoggerModule.forRootAsync({
       useFactory: (configService: ConfigService) => {
         const isProduction = configService.get('NODE_ENV') === 'production';
+
         return {
           pinoHttp: {
             transport: isProduction

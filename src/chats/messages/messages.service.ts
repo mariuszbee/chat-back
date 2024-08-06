@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ChatsRepository } from '../chats.repository';
-import { CreateMessageInput } from './dto/create-message.inpot';
+import { CreateMessageInput } from './dto/create-message.input';
 import { Message } from './entities/message.entity';
 import { Types } from 'mongoose';
 import { GetMessagesArgs } from './dto/get-messages.args';
-import { PUB_SUB } from 'src/common/constants/injection-token';
+import { PUB_SUB } from 'src/common/constants/injection-tokens';
 import { PubSub } from 'graphql-subscriptions';
-import { MESSAGE_CREATED } from './constants/bubsub-triggers';
+import { MESSAGE_CREATED } from './constants/pubsub-triggers';
 
 @Injectable()
 export class MessagesService {
@@ -36,7 +36,9 @@ export class MessagesService {
       },
       { $push: { messages: message } },
     );
-    await this.pubSub.publish(MESSAGE_CREATED, { messageCreated: message });
+    await this.pubSub.publish(MESSAGE_CREATED, {
+      messageCreated: message,
+    });
     return message;
   }
 

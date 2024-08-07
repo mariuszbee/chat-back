@@ -42,6 +42,10 @@ export class ChatsService {
     return chats;
   }
 
+  async countChats() {
+    return this.chatsRepository.model.countDocuments({});
+  }
+
   async findOne(_id: string) {
     const chats = await this.findMany([
       { $match: { chatId: new Types.ObjectId(_id) } },

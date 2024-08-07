@@ -33,6 +33,7 @@ export class ChatsService {
     chats.forEach((chat) => {
       if (!chat.latestMessage?._id) {
         delete chat.latestMessage;
+        return;
       }
       chat.latestMessage.user = chat.latestMessage.user[0];
       delete chat.latestMessage.userId;

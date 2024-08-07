@@ -7,7 +7,7 @@ import { GetMessagesArgs } from './dto/get-messages.args';
 import { PUB_SUB } from 'src/common/constants/injection-tokens';
 import { PubSub } from 'graphql-subscriptions';
 import { MESSAGE_CREATED } from './constants/pubsub-triggers';
-import { MessageCreatedArgs } from './dto/message-created.args';
+
 import { MessageDocument } from './entities/message.document';
 import { UsersService } from 'src/users/users.service';
 
@@ -63,10 +63,7 @@ export class MessagesService {
     ]);
   }
 
-  async messageCreated({ chatId }: MessageCreatedArgs) {
-    await this.chatsRepository.findOne({
-      _id: chatId,
-    });
+  async messageCreated() {
     return this.pubSub.asyncIterator(MESSAGE_CREATED);
   }
 }

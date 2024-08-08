@@ -4,7 +4,6 @@ import { UpdateChatInput } from './dto/update-chat.input';
 import { ChatsRepository } from './chats.repository';
 import { PipelineStage, Types } from 'mongoose';
 import { PaginationArgs } from 'src/common/dto/pagination-args.dto';
-import { create } from 'domain';
 
 @Injectable()
 export class ChatsService {
@@ -28,7 +27,7 @@ export class ChatsService {
         $set: {
           latestMessage: {
             $cond: [
-              'messages',
+              '$messages',
               { $arrayElemAt: ['$messages', -1] },
               { createdAt: new Date() },
             ],
@@ -36,12 +35,9 @@ export class ChatsService {
         },
       },
       { $sort: { 'latestMessage.createdAt': -1 } },
-      { $skip: paginationArgs?.skip },
-      { $limit: paginationArgs?.limit },
+      { $skip: paginationArgs.skip },
+      { $limit: paginationArgs.limit },
       { $unset: 'messages' },
-
-      { $skip: paginationArgs?.skip },
-      { $limit: paginationArgs?.limit },
       {
         $lookup: {
           from: 'users',

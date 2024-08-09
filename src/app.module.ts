@@ -25,7 +25,10 @@ import { AuthService } from './auth/auth.service';
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       useFactory: (authService: AuthService) => ({
+        debug: process.env.NODE_ENV !== 'production',
+        playground: process.env.NODE_ENV !== 'production',
         autoSchemaFile: true,
+        cors: true,
         subscriptions: {
           'graphql-ws': {
             onConnect: (context: any) => {

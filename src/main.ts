@@ -7,10 +7,11 @@ import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
   app.useLogger(app.get(Logger));
   app.use(cookieParser());
   const configService = app.get(ConfigService);
-  await app.listen(configService.getOrThrow('PORT'));
+  await app.listen(configService.getOrThrow('PORT', 1024));
 }
 bootstrap();

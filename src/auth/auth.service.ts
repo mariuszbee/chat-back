@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   verifyWs(request: Request, connectionParams: any = {}): TokenPayload {
-    const cookies: string[] = request.headers?.cookie.split('; ');
+    const cookies: string[] = request.headers.cookie?.split('; ');
     const authCookie = cookies?.find((cookie) =>
       cookie.includes('Authentication='),
     );
